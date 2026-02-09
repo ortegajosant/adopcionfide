@@ -1,0 +1,23 @@
+﻿@model DemoMVC.Models.Persona
+
+@{
+    ViewData["Title"] = "Detalle de Persona";
+}
+
+<h2 class="mb-3">Detalle de Persona</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Nombre</h5>
+
+        <p class="card-text">
+            <strong>Cédula:</strong> @Model.Cedula <br />
+            <strong>Edad:</strong> @Model.Edad <br />
+            <strong>Username:</strong> @Model.Username
+        </p>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Volver al listado
+        </a>
+    </div>
+</div>

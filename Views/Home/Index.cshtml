@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Sistema de Adopción";
+}
+
+<div class="text-center mt-5">
+    <h1 class="mb-4">Sistema de Adopción de Mascotas</h1>
+    <p class="mb-4 text-muted">
+        Seleccione el módulo al que desea ingresar
+    </p>
+
+    <div class="d-flex justify-content-center gap-4">
+        <a asp-controller="Persona"
+           asp-action="Index"
+           class="btn btn-primary btn-lg">Personas</a>
+
+        <a asp-controller="Mascota"
+           asp-action="Index"
+           class="btn btn-success btn-lg">Mascotas</a>
+    </div>
+</div>

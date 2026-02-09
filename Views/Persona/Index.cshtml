@@ -1,0 +1,37 @@
+﻿@model List<DemoMVC.Models.Persona>
+
+@{
+    ViewData["Title"] = "Listado de Personas";
+}
+
+<h2 class="mb-3">Listado de Personas</h2>
+
+<a asp-action="Crear" class="btn btn-success mb-3">Crear Persona</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Cédula</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Cedula</td>
+                <td>@p.Nombre</td>
+                <td>@p.Edad</td>
+                <td>
+                    <a asp-action="Detalle"
+                       asp-route-id="@p.Cedula"
+                       class="btn btn-primary btn-sm">
+                        Ver detalle
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

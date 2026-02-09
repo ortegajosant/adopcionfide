@@ -1,0 +1,21 @@
+﻿@model DemoMVC.Models.Mascota
+
+@{
+    ViewData["Title"] = "Detalle de Mascota";
+}
+
+<h2 class="mb-3">Detalle de la mascota</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">@Model.Nombre</h4>
+
+        <p class="card-text">
+            <strong>Tipo:</strong> @Model.Tipo <br />
+        </p>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Volver
+        </a>
+    </div>
+</div>
