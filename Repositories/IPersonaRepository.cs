@@ -8,6 +8,7 @@ namespace DemoMVC.Repositories
     {
         List<Persona> ObtenerTodas();
         Persona? ObtenerPorCedula(string cedula);
+        Persona? ObtenerPorId(int cedula);
         bool ExisteCedula(string cedula);
         void Agregar(Persona persona);
 

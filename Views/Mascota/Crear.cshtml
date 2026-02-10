@@ -1,4 +1,4 @@
-﻿@model DemoMVC.Models.Mascota
+﻿@model DemoMVC.Models.MascotaViewModel
 
 @{
     ViewData["Title"] = "Registrar Mascota";
@@ -6,20 +6,32 @@
 
 <h2 class="mb-3">Registrar Mascota</h2>
 
-<form asp-action="Crear" method="post" class="row g-3">
+<form asp-action="Crear"
+      method="post"
+      enctype="multipart/form-data"
+      class="row g-3">
 
     <div class="col-md-6">
         <label asp-for="Nombre" class="form-label"></label>
         <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
 
     <div class="col-md-6">
         <label asp-for="Tipo" class="form-label"></label>
         <select asp-for="Tipo" class="form-select">
+            <option value="">Seleccione</option>
             <option>Perro</option>
             <option>Gato</option>
             <option>Otro</option>
         </select>
+        <span asp-validation-for="Tipo" class="text-danger"></span>
+    </div>
+
+    <!-- Imagen -->
+    <div class="col-md-6">
+        <label class="form-label">Imagen</label>
+        <input asp-for="Imagen" type="file" class="form-control" />
     </div>
 
     <div class="col-12">

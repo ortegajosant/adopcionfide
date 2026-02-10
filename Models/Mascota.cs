@@ -14,5 +14,9 @@ namespace DemoMVC.Models
         public string Tipo { get; set; }
 
         public bool Adoptada { get; set; }
+
+        public string? ImagenUrl { get; set; }
+
+        public List<Adopcion> Adopciones { get; set; } = new();
     }
 }
