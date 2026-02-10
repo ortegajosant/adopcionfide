@@ -19,6 +19,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Add repositories to the container
 builder.Services.AddScoped<IPersonaRepository, PersonaRepository>();
 builder.Services.AddScoped<IMascotaRepository, MascotaRepository>();
+builder.Services.AddScoped<IAdopcionRepository, AdopcionRepository>();
+
+// Register application services
+builder.Services.AddScoped<IPersonaService, PersonaService>();
+builder.Services.AddScoped<IMascotaService, MascotaService>();
+builder.Services.AddScoped<IAdopcionService, AdopcionService>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -27,10 +34,6 @@ builder.Services.AddControllersWithViews(options =>
 {
     options.ModelBinderProviders.Insert(0, new PersonaModelBinderProvider());
 });
-
-// Register application services
-builder.Services.AddScoped<IPersonaService, PersonaService>();
-builder.Services.AddScoped<IMascotaService, MascotaService>();
 
 var app = builder.Build();
 
