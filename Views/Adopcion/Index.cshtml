@@ -1,0 +1,26 @@
+﻿@model List<DemoMVC.Models.Adopcion>
+
+<h2>Adopciones</h2>
+
+<a asp-controller="Adopcion"
+   asp-action="Crear"
+   class="btn btn-primary mb-3">
+    ➕ Nueva Adopción
+</a>
+
+<table class="table table-striped">
+    <tr>
+        <th>Persona</th>
+        <th>Mascota</th>
+        <th>Fecha</th>
+    </tr>
+
+    @foreach (var a in Model)
+    {
+        <tr>
+            <td>@a.Persona.Nombre</td>
+            <td>@a.Mascota.Nombre</td>
+            <td>@a.FechaAdopcion.ToShortDateString()</td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,45 @@
+﻿@model DemoMVC.Models.AdopcionViewModel
+@{
+    ViewData["Title"] = "Registrar Adopción";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">🐾 Nueva Adopción</h2>
+
+    <form asp-action="Crear" asp-controller="Adopcion" method="post" class="card p-4 shadow-sm">
+
+        <div class="mb-3">
+            <label asp-for="PersonaId" class="form-label">Persona</label>
+            <select asp-for="PersonaId"
+                    class="form-select"
+                    asp-items="@(new SelectList(Model.Personas, "Id", "Nombre"))">
+                <option value="">Seleccione una persona</option>
+            </select>
+            <span asp-validation-for="PersonaId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="MascotaId" class="form-label">Mascota</label>
+            <select asp-for="MascotaId"
+                    class="form-select"
+                    asp-items="@(new SelectList(Model.MascotasDisponibles, "Id", "Nombre"))">
+                <option value="">Seleccione una mascota</option>
+            </select>
+            <span asp-validation-for="MascotaId" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a asp-action="Index"
+               asp-controller="Adopcion"
+               class="btn btn-outline-secondary">
+                ⬅ Volver
+            </a>
+
+            <button type="submit" class="btn btn-success">
+                ✔ Confirmar adopción
+            </button>
+        </div>
+    </form>
+
+</div>

@@ -17,5 +17,7 @@ namespace DemoMVC.Models
         public int Edad { get; set; }
 
         public string Username { get; set; }
+
+        public List<Adopcion> Adopciones { get; set; } = new();
     }
 }

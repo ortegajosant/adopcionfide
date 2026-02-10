@@ -21,6 +21,9 @@ public class PersonaRepository : IPersonaRepository
     public Persona? ObtenerPorCedula(string cedula)
         => _context.Personas.FirstOrDefault(p => p.Cedula == cedula);
 
+    public Persona? ObtenerPorId(int id)
+        => _context.Personas.Find(id);
+
     public bool ExisteCedula(string cedula)
         => _context.Personas.Any(p => p.Cedula == cedula);
 

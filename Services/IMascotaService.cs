@@ -7,5 +7,6 @@ namespace DemoMVC.Services
         List<Mascota> ObtenerDisponibles();
         Mascota? ObtenerDetalle(int id);
         bool CrearMascota(Mascota mascota);
+        string GuardarImagen(IFormFile? imagen);
     }
 }

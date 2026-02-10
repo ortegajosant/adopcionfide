@@ -35,16 +35,25 @@ namespace DemoMVC.Controllers
         [HttpGet("crear")]
         public IActionResult Crear()
         {
-            return View();
+            return View(new MascotaViewModel());
         }
 
         [HttpPost("crear")]
-        public IActionResult Crear(Mascota mascota)
+        public IActionResult Crear(MascotaViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(mascota);
+                return View(model);
+
+            var mascota = new Mascota
+            {
+                Nombre = model.Nombre,
+                Tipo = model.Tipo,
+                Adoptada = false,
+                ImagenUrl = _mascotaService.GuardarImagen(model.Imagen)
+            };
 
             _mascotaService.CrearMascota(mascota);
+
             return RedirectToAction("Index");
         }
     }

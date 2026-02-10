@@ -9,10 +9,12 @@ namespace DemoMVC.Services
     public class MascotaService : IMascotaService
     {
         private readonly IMascotaRepository _repository;
+        private readonly IFileService _fileService;
 
-        public MascotaService(IMascotaRepository repository)
+        public MascotaService(IMascotaRepository repository, IFileService fileService)
         {
             _repository = repository;
+            _fileService = fileService;
         }
 
         public List<Mascota> ObtenerDisponibles()
@@ -28,6 +30,11 @@ namespace DemoMVC.Services
 
             _repository.Agregar(mascota);
             return true;
+        }
+
+        string IMascotaService.GuardarImagen(IFormFile? imagen)
+        {
+            return _fileService.GuardarImagen(imagen);
         }
     }
 }
