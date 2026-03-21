@@ -46,6 +46,7 @@ builder.Services.AddScoped<IPersonaService, PersonaService>();
 builder.Services.AddScoped<IMascotaService, MascotaService>();
 builder.Services.AddScoped<IAdopcionService, AdopcionService>();
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -47,15 +47,7 @@ namespace DemoMVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var mascota = new Mascota
-            {
-                Nombre = model.Nombre,
-                Tipo = model.Tipo,
-                Adoptada = false,
-                ImagenUrl = _mascotaService.GuardarImagen(model.Imagen)
-            };
-
-            _mascotaService.CrearMascota(mascota);
+            _mascotaService.CrearDesdeMascotaViewModel(model);
 
             return RedirectToAction("Index");
         }

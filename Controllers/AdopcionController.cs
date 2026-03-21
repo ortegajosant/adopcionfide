@@ -9,19 +9,13 @@ using Microsoft.AspNetCore.Mvc;
 public class AdopcionController : Controller
 {
     private readonly IAdopcionService _service;
-    private readonly IPersonaService _personaService;
-    private readonly IMascotaService _mascotaService;
     private readonly UserManager<Persona> _userManager;
 
     public AdopcionController(
         IAdopcionService service,
-        IPersonaService personaService,
-        IMascotaService mascotaService,
         UserManager<Persona> userManager)
     {
         _service = service;
-        _personaService = personaService;
-        _mascotaService = mascotaService;
         _userManager = userManager;
     }
 
@@ -29,18 +23,9 @@ public class AdopcionController : Controller
     public IActionResult Crear()
     {
         if (User.IsInRole("Admin"))
-        {
-            var model = _service.ObtenerAdopcionViewModel();
-            return View(model);
-        }
+            return View(_service.ObtenerAdopcionViewModel());
         else
-        {
-            var model = new AdopcionViewModel
-            {
-                MascotasDisponibles = _mascotaService.ObtenerDisponibles()
-            };
-            return View(model);
-        }
+            return View(_service.ObtenerAdopcionViewModelParaUsuario());
     }
 
     [HttpPost("crear")]
@@ -57,7 +42,7 @@ public class AdopcionController : Controller
             if (User.IsInRole("Admin"))
                 model = _service.ObtenerAdopcionViewModel();
             else
-                model.MascotasDisponibles = _mascotaService.ObtenerDisponibles();
+                model = _service.ObtenerAdopcionViewModelParaUsuario();
 
             return View(model);
         }
@@ -70,16 +55,11 @@ public class AdopcionController : Controller
     public async Task<IActionResult> Index()
     {
         if (User.IsInRole("Admin"))
-        {
-            var adopciones = _service.ObtenerTodas();
-            return View(adopciones);
-        }
+            return View(_service.ObtenerTodas());
         else
         {
             var user = await _userManager.GetUserAsync(User);
-            var adopciones = _service.ObtenerTodas()
-                .Where(a => a.PersonaId == user!.Id).ToList();
-            return View(adopciones);
+            return View(_service.ObtenerPorUsuario(user!.Id));
         }
     }
 }

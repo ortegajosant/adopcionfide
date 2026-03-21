@@ -32,9 +32,17 @@ namespace DemoMVC.Services
             return true;
         }
 
-        string IMascotaService.GuardarImagen(IFormFile? imagen)
+        public bool CrearDesdeMascotaViewModel(MascotaViewModel model)
         {
-            return _fileService.GuardarImagen(imagen);
+            var mascota = new Mascota
+            {
+                Nombre = model.Nombre,
+                Tipo = model.Tipo,
+                Adoptada = false,
+                ImagenUrl = _fileService.GuardarImagen(model.Imagen)
+            };
+
+            return CrearMascota(mascota);
         }
     }
 }

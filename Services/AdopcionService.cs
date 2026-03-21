@@ -37,11 +37,23 @@ namespace DemoMVC.Services
         public List<Adopcion> ObtenerTodas()
             => _adopcionRepo.ObtenerTodas();
 
-        AdopcionViewModel IAdopcionService.ObtenerAdopcionViewModel()
+        public List<Adopcion> ObtenerPorUsuario(int personaId)
+            => _adopcionRepo.ObtenerTodas()
+                .Where(a => a.PersonaId == personaId).ToList();
+
+        public AdopcionViewModel ObtenerAdopcionViewModel()
         {
             return new AdopcionViewModel
             {
                 Personas = _personaRepo.ObtenerTodas(),
+                MascotasDisponibles = _mascotaRepo.ObtenerDisponibles()
+            };
+        }
+
+        public AdopcionViewModel ObtenerAdopcionViewModelParaUsuario()
+        {
+            return new AdopcionViewModel
+            {
                 MascotasDisponibles = _mascotaRepo.ObtenerDisponibles()
             };
         }

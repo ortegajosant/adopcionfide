@@ -1,23 +1,17 @@
 using DemoMVC.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using DemoMVC.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DemoMVC.Controllers
 {
     [Route("Account")]
     public class AccountController : Controller
     {
-        private readonly UserManager<Persona> _userManager;
-        private readonly SignInManager<Persona> _signInManager;
+        private readonly IAccountService _accountService;
 
-        public AccountController(
-            UserManager<Persona> userManager,
-            SignInManager<Persona> signInManager)
+        public AccountController(IAccountService accountService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _accountService = accountService;
         }
 
         [HttpGet("Login")]
@@ -36,15 +30,13 @@ namespace DemoMVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = await _signInManager.PasswordSignInAsync(
-                model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+            var (succeeded, errorMessage) = await _accountService.LoginAsync(
+                model.Email, model.Password, model.RememberMe);
 
-            if (result.Succeeded)
-            {
+            if (succeeded)
                 return LocalRedirect(returnUrl ?? "/");
-            }
 
-            ModelState.AddModelError(string.Empty, "Correo o contraseña incorrectos.");
+            ModelState.AddModelError(string.Empty, errorMessage!);
             return View(model);
         }
 
@@ -61,37 +53,13 @@ namespace DemoMVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // Verificar si la cédula ya existe
-            var existingUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Cedula == model.Cedula);
-            
-            if (existingUser != null)
-            {
-                ModelState.AddModelError("Cedula", "Esta cédula ya está registrada.");
-                return View(model);
-            }
+            var (succeeded, errors) = await _accountService.RegisterAsync(model);
 
-            var persona = new Persona
-            {
-                UserName = model.Email,
-                Email = model.Email,
-                Cedula = model.Cedula,
-                Nombre = model.Nombre,
-                Edad = model.Edad
-            };
-
-            var result = await _userManager.CreateAsync(persona, model.Password);
-
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(persona, "User");
-                await _signInManager.SignInAsync(persona, isPersistent: false);
+            if (succeeded)
                 return RedirectToAction("Index", "Home");
-            }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
+            foreach (var error in errors)
+                ModelState.AddModelError(string.Empty, error);
 
             return View(model);
         }
@@ -100,7 +68,7 @@ namespace DemoMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _accountService.LogoutAsync();
             return RedirectToAction("Index", "Home");
         }
 
