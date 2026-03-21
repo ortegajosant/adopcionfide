@@ -1,10 +1,12 @@
 ﻿using DemoMVC.Models;
 using DemoMVC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoMVC.Controllers
 {
     [Route("persona")]
+    [Authorize(Roles = "Admin")]
     public class PersonaController : Controller
     {
         private readonly IPersonaService _personaService;

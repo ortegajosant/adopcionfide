@@ -1,6 +1,8 @@
 using DemoMVC.Data;
+using DemoMVC.Models;
 using DemoMVC.Repositories;
 using DemoMVC.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -15,6 +17,24 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         )
     )
 );
+
+// Configurar Identity
+builder.Services.AddIdentity<Persona, IdentityRole<int>>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccesoDenegado";
+});
 
 // Add repositories to the container
 builder.Services.AddScoped<IPersonaRepository, PersonaRepository>();
@@ -37,6 +57,40 @@ builder.Services.AddControllersWithViews(options =>
 
 var app = builder.Build();
 
+// Seed de roles y usuario administrador
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
+    var userManager = services.GetRequiredService<UserManager<Persona>>();
+
+    string[] roles = { "Admin", "User" };
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole<int> { Name = role });
+        }
+    }
+
+    var adminEmail = "admin@demo.com";
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+    if (adminUser == null)
+    {
+        adminUser = new Persona
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            Cedula = "000000000",
+            Nombre = "Administrador",
+            Edad = 30,
+            EmailConfirmed = true
+        };
+        await userManager.CreateAsync(adminUser, "Admin123!");
+        await userManager.AddToRoleAsync(adminUser, "Admin");
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -44,6 +98,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

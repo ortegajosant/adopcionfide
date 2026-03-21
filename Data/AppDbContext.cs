@@ -1,18 +1,22 @@
 ﻿using DemoMVC.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DemoMVC.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<Persona, IdentityRole<int>, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Persona> Personas { get; set; }
         public DbSet<Mascota> Mascotas { get; set; }
         public DbSet<Adopcion> Adopciones { get; set; }
+
+        // Alias para compatibilidad con repositorios existentes
+        public DbSet<Persona> Personas => Users;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

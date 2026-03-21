@@ -18,8 +18,7 @@ public class PersonaModelBinder : IModelBinder
         {
             Nombre = nombre,
             Cedula = cedula,
-            Edad = edad,
-            Username = nombre.Replace(" ", "-").ToLower()
+            Edad = edad
         };
 
         bindingContext.Result = ModelBindingResult.Success(persona);

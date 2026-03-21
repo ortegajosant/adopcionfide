@@ -9,14 +9,19 @@
 
     @using (Html.BeginForm("Crear", "Adopcion", FormMethod.Post, new { @class = "card p-4 shadow-sm" }))
     {
-        <div class="mb-3">
-            @Html.LabelFor(m => m.PersonaId, "Persona", new { @class = "form-label" })
-            @Html.DropDownListFor(m => m.PersonaId,
-                new SelectList(Model.Personas, "Id", "Nombre"),
-                "Seleccione una persona",
-                new { @class = "form-select" })
-            @Html.ValidationMessageFor(m => m.PersonaId, "", new { @class = "text-danger" })
-        </div>
+        @Html.AntiForgeryToken()
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="mb-3">
+                @Html.LabelFor(m => m.PersonaId, "Persona", new { @class = "form-label" })
+                @Html.DropDownListFor(m => m.PersonaId,
+                    new SelectList(Model.Personas, "Id", "Nombre"),
+                    "Seleccione una persona",
+                    new { @class = "form-select" })
+                @Html.ValidationMessageFor(m => m.PersonaId, "", new { @class = "text-danger" })
+            </div>
+        }
 
         <div class="mb-3">
             @Html.LabelFor(m => m.MascotaId, "Mascota", new { @class = "form-label" })

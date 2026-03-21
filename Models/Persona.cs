@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace DemoMVC.Models
 {
-    public class Persona
+    public class Persona : IdentityUser<int>
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "La cédula es obligatoria")]
         public string Cedula { get; set; }
 
@@ -15,8 +13,6 @@ namespace DemoMVC.Models
 
         [Range(1, 120, ErrorMessage = "Edad inválida")]
         public int Edad { get; set; }
-
-        public string Username { get; set; }
 
         public List<Adopcion> Adopciones { get; set; } = new();
     }

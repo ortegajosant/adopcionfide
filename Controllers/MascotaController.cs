@@ -1,5 +1,6 @@
 ﻿using DemoMVC.Models;
 using DemoMVC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoMVC.Controllers
@@ -32,12 +33,14 @@ namespace DemoMVC.Controllers
             return View(mascota);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("crear")]
         public IActionResult Crear()
         {
             return View(new MascotaViewModel());
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("crear")]
         public IActionResult Crear(MascotaViewModel model)
         {
