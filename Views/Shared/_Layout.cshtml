@@ -32,7 +32,7 @@
                                 <a class="nav-link text-dark" asp-controller="Adopcion" asp-action="Index">Adopciones</a>
                             </li>
                         }
-                        @if (User.IsInRole("Admin"))
+                        @if (User.IsInRole(DemoMVC.Constants.Roles.Admin))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Persona" asp-action="Index">Personas</a>
@@ -46,6 +46,20 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
             @RenderBody()
         </main>
     </div>

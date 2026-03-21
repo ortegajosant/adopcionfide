@@ -1,4 +1,5 @@
 ﻿using DemoMVC.Constants;
+using DemoMVC.Exceptions;
 using DemoMVC.Models;
 using DemoMVC.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -21,12 +22,20 @@ public class AdopcionController : Controller
     }
 
     [HttpGet("crear")]
-    public IActionResult Crear()
+    public async Task<IActionResult> Crear()
     {
         if (User.IsInRole(Roles.Admin))
+        {
+            ViewBag.ModoAdmin = true;
             return View(_service.ObtenerAdopcionViewModel());
+        }
         else
+        {
+            var user = await _userManager.GetUserAsync(User);
+            ViewBag.ModoAdmin = false;
+            ViewBag.NombreUsuario = user!.Nombre;
             return View(_service.ObtenerAdopcionViewModelParaUsuario());
+        }
     }
 
     [HttpPost("crear")]
@@ -48,8 +57,21 @@ public class AdopcionController : Controller
             return View(model);
         }
 
-        _service.Adoptar(model.PersonaId, model.MascotaId);
-        return RedirectToAction("Index");
+        try
+        {
+            _service.Adoptar(model.PersonaId, model.MascotaId);
+            TempData["SuccessMessage"] = "¡Adopción realizada exitosamente!";
+            return RedirectToAction("Index");
+        }
+        catch (NotFoundException)
+        {
+            return NotFound();
+        }
+        catch (BusinessException ex)
+        {
+            TempData["ErrorMessage"] = ex.Message;
+            return RedirectToAction("Crear");
+        }
     }
 
     [HttpGet("")]

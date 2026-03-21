@@ -56,7 +56,10 @@ namespace DemoMVC.Controllers
             var (succeeded, errors) = await _accountService.RegisterAsync(model);
 
             if (succeeded)
+            {
+                TempData["SuccessMessage"] = "¡Registro exitoso! Bienvenido.";
                 return RedirectToAction("Index", "Home");
+            }
 
             foreach (var error in errors)
                 ModelState.AddModelError(string.Empty, error);
@@ -69,6 +72,7 @@ namespace DemoMVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await _accountService.LogoutAsync();
+            TempData["SuccessMessage"] = "Has cerrado sesión correctamente.";
             return RedirectToAction("Index", "Home");
         }
 
