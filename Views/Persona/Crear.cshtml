@@ -6,32 +6,30 @@
 
 <h2 class="mb-3">Crear Persona</h2>
 
-<form asp-action="Crear" method="post" class="row g-3">
-
+@using (Html.BeginForm("Crear", "Persona", FormMethod.Post, new { @class = "row g-3" }))
+{
     <div class="col-md-6">
-        <label asp-for="Cedula" class="form-label"></label>
-        <input asp-for="Cedula" class="form-control" />
-        <span asp-validation-for="Cedula" class="text-danger"></span>
+        @Html.LabelFor(m => m.Cedula, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Cedula, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Cedula, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Nombre" class="form-label"></label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+        @Html.LabelFor(m => m.Nombre, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-4">
-        <label asp-for="Edad" class="form-label"></label>
-        <input asp-for="Edad" class="form-control" />
-        <span asp-validation-for="Edad" class="text-danger"></span>
+        @Html.LabelFor(m => m.Edad, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Edad, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Edad, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-12">
         <button type="submit" class="btn btn-primary">
             Guardar
         </button>
-        <a asp-action="Index" class="btn btn-secondary">
-            Cancelar
-        </a>
+        @Html.ActionLink("Cancelar", "Index", "Persona", null, new { @class = "btn btn-secondary" })
     </div>
-</form>
+}

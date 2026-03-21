@@ -6,40 +6,37 @@
 
 <h2 class="mb-3">Registrar Mascota</h2>
 
-<form asp-action="Crear"
-      method="post"
-      enctype="multipart/form-data"
-      class="row g-3">
-
+@using (Html.BeginForm("Crear", "Mascota", FormMethod.Post, new { enctype = "multipart/form-data", @class = "row g-3" }))
+{
     <div class="col-md-6">
-        <label asp-for="Nombre" class="form-label"></label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+        @Html.LabelFor(m => m.Nombre, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Tipo" class="form-label"></label>
-        <select asp-for="Tipo" class="form-select">
-            <option value="">Seleccione</option>
-            <option>Perro</option>
-            <option>Gato</option>
-            <option>Otro</option>
-        </select>
-        <span asp-validation-for="Tipo" class="text-danger"></span>
+        @Html.LabelFor(m => m.Tipo, new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.Tipo, 
+            new[] { 
+                new SelectListItem { Text = "Seleccione", Value = "" },
+                new SelectListItem { Text = "Perro", Value = "Perro" },
+                new SelectListItem { Text = "Gato", Value = "Gato" },
+                new SelectListItem { Text = "Otro", Value = "Otro" }
+            },
+            new { @class = "form-select" })
+        @Html.ValidationMessageFor(m => m.Tipo, "", new { @class = "text-danger" })
     </div>
 
     <!-- Imagen -->
     <div class="col-md-6">
         <label class="form-label">Imagen</label>
-        <input asp-for="Imagen" type="file" class="form-control" />
+        @Html.TextBoxFor(m => m.Imagen, new { type = "file", @class = "form-control" })
     </div>
 
     <div class="col-12">
         <button type="submit" class="btn btn-primary">
             Guardar
         </button>
-        <a asp-action="Index" class="btn btn-secondary">
-            Cancelar
-        </a>
+        @Html.ActionLink("Cancelar", "Index", "Mascota", null, new { @class = "btn btn-secondary" })
     </div>
-</form>
+}

@@ -7,39 +7,33 @@
 
     <h2 class="mb-4">🐾 Nueva Adopción</h2>
 
-    <form asp-action="Crear" asp-controller="Adopcion" method="post" class="card p-4 shadow-sm">
-
+    @using (Html.BeginForm("Crear", "Adopcion", FormMethod.Post, new { @class = "card p-4 shadow-sm" }))
+    {
         <div class="mb-3">
-            <label asp-for="PersonaId" class="form-label">Persona</label>
-            <select asp-for="PersonaId"
-                    class="form-select"
-                    asp-items="@(new SelectList(Model.Personas, "Id", "Nombre"))">
-                <option value="">Seleccione una persona</option>
-            </select>
-            <span asp-validation-for="PersonaId" class="text-danger"></span>
+            @Html.LabelFor(m => m.PersonaId, "Persona", new { @class = "form-label" })
+            @Html.DropDownListFor(m => m.PersonaId,
+                new SelectList(Model.Personas, "Id", "Nombre"),
+                "Seleccione una persona",
+                new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.PersonaId, "", new { @class = "text-danger" })
         </div>
 
         <div class="mb-3">
-            <label asp-for="MascotaId" class="form-label">Mascota</label>
-            <select asp-for="MascotaId"
-                    class="form-select"
-                    asp-items="@(new SelectList(Model.MascotasDisponibles, "Id", "Nombre"))">
-                <option value="">Seleccione una mascota</option>
-            </select>
-            <span asp-validation-for="MascotaId" class="text-danger"></span>
+            @Html.LabelFor(m => m.MascotaId, "Mascota", new { @class = "form-label" })
+            @Html.DropDownListFor(m => m.MascotaId,
+                new SelectList(Model.MascotasDisponibles, "Id", "Nombre"),
+                "Seleccione una mascota",
+                new { @class = "form-select" })
+            @Html.ValidationMessageFor(m => m.MascotaId, "", new { @class = "text-danger" })
         </div>
 
         <div class="d-flex justify-content-between">
-            <a asp-action="Index"
-               asp-controller="Adopcion"
-               class="btn btn-outline-secondary">
-                ⬅ Volver
-            </a>
+            @Html.ActionLink("⬅ Volver", "Index", "Adopcion", null, new { @class = "btn btn-outline-secondary" })
 
             <button type="submit" class="btn btn-success">
                 ✔ Confirmar adopción
             </button>
         </div>
-    </form>
+    }
 
 </div>
