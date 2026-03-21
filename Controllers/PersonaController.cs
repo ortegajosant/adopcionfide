@@ -1,4 +1,5 @@
-﻿using DemoMVC.Models;
+﻿using DemoMVC.Constants;
+using DemoMVC.Models;
 using DemoMVC.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DemoMVC.Controllers
 {
     [Route("persona")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = Roles.Admin)]
     public class PersonaController : Controller
     {
         private readonly IPersonaService _personaService;

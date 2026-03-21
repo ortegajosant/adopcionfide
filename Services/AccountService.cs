@@ -1,3 +1,4 @@
+using DemoMVC.Constants;
 using DemoMVC.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ namespace DemoMVC.Services
             if (!result.Succeeded)
                 return (false, result.Errors.Select(e => e.Description));
 
-            await _userManager.AddToRoleAsync(persona, "User");
+            await _userManager.AddToRoleAsync(persona, Roles.User);
             await _signInManager.SignInAsync(persona, isPersistent: false);
 
             return (true, []);

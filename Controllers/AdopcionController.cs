@@ -1,4 +1,5 @@
-﻿using DemoMVC.Models;
+﻿using DemoMVC.Constants;
+using DemoMVC.Models;
 using DemoMVC.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ public class AdopcionController : Controller
     [HttpGet("crear")]
     public IActionResult Crear()
     {
-        if (User.IsInRole("Admin"))
+        if (User.IsInRole(Roles.Admin))
             return View(_service.ObtenerAdopcionViewModel());
         else
             return View(_service.ObtenerAdopcionViewModelParaUsuario());
@@ -31,7 +32,7 @@ public class AdopcionController : Controller
     [HttpPost("crear")]
     public async Task<IActionResult> Crear(AdopcionViewModel model)
     {
-        if (!User.IsInRole("Admin"))
+        if (!User.IsInRole(Roles.Admin))
         {
             var user = await _userManager.GetUserAsync(User);
             model.PersonaId = user!.Id;
@@ -39,7 +40,7 @@ public class AdopcionController : Controller
 
         if (!ModelState.IsValid)
         {
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole(Roles.Admin))
                 model = _service.ObtenerAdopcionViewModel();
             else
                 model = _service.ObtenerAdopcionViewModelParaUsuario();
@@ -54,7 +55,7 @@ public class AdopcionController : Controller
     [HttpGet("")]
     public async Task<IActionResult> Index()
     {
-        if (User.IsInRole("Admin"))
+        if (User.IsInRole(Roles.Admin))
             return View(_service.ObtenerTodas());
         else
         {

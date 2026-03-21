@@ -1,3 +1,4 @@
+using DemoMVC.Constants;
 using DemoMVC.Data;
 using DemoMVC.Models;
 using DemoMVC.Repositories;
@@ -65,7 +66,7 @@ using (var scope = app.Services.CreateScope())
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
     var userManager = services.GetRequiredService<UserManager<Persona>>();
 
-    string[] roles = { "Admin", "User" };
+    string[] roles = { Roles.Admin, Roles.User };
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
@@ -88,7 +89,7 @@ using (var scope = app.Services.CreateScope())
             EmailConfirmed = true
         };
         await userManager.CreateAsync(adminUser, "Admin123!");
-        await userManager.AddToRoleAsync(adminUser, "Admin");
+        await userManager.AddToRoleAsync(adminUser, Roles.Admin);
     }
 }
 
