@@ -50,6 +50,7 @@ namespace DemoMVC.Controllers
 
             _mascotaService.CrearDesdeMascotaViewModel(model);
 
+            TempData["SuccessMessage"] = "¡Mascota registrada exitosamente!";
             return RedirectToAction("Index");
         }
     }

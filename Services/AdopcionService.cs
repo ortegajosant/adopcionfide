@@ -1,4 +1,5 @@
-﻿using DemoMVC.Models;
+﻿using DemoMVC.Exceptions;
+using DemoMVC.Models;
 using DemoMVC.Repositories;
 
 
@@ -26,10 +27,10 @@ namespace DemoMVC.Services
             var mascota = _mascotaRepo.ObtenerPorId(mascotaId);
 
             if (persona == null || mascota == null)
-                throw new Exception("Datos inválidos");
+                throw new NotFoundException("La persona o mascota no fue encontrada.");
 
             if (mascota.Adoptada)
-                throw new Exception("Mascota ya adoptada");
+                throw new BusinessException("Esta mascota ya fue adoptada.");
 
             _adopcionRepo.CrearAdopcion(persona, mascota);
         }
