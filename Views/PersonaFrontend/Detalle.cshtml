@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Detalle de Persona (Frontend)";
+}
+
+<h2 class="mb-3">Detalle de Persona <span class="badge bg-info">Frontend</span></h2>
+
+<div id="detalle-container" data-cedula="@Context.Request.RouteValues["id"]">
+    <div id="detalle-loading" class="text-center">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        Cargando...
+    </div>
+
+    <div id="detalle-card" class="card d-none">
+        <div class="card-body">
+            <h5 class="card-title" id="persona-nombre"></h5>
+            <p class="card-text">
+                <strong>Cédula:</strong> <span id="persona-cedula"></span><br />
+                <strong>Edad:</strong> <span id="persona-edad"></span><br />
+                <strong>Correo:</strong> <span id="persona-email"></span>
+            </p>
+            <a href="/persona-frontend" class="btn btn-secondary">Volver al listado</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/persona-api.js"></script>
+    <script src="~/js/persona-detalle.js"></script>
+}
