@@ -1,24 +1,24 @@
 // Módulo que encapsula todas las llamadas HTTP al API de Personas.
-// Utiliza la Fetch API nativa del navegador para comunicarse con el backend.
-// Cada método es async, lo que permite usar await al consumirlo.
+// Utiliza jQuery $.ajax para el GET y Fetch API nativa para las demás operaciones.
+// Cada método retorna una Promise, lo que permite usar await al consumirlo.
+// Depende de: jQuery (cargado en _Layout.cshtml via jquery.min.js).
 const personaApi = {
 
     // URL base del API REST de personas (definido en PersonaApiController.cs)
     baseUrl: '/api/personas',
 
-    // Obtiene la lista completa de personas desde el API.
+    // Obtiene la lista completa de personas desde el API usando jQuery $.ajax.
     // Retorna: un array de objetos { cedula, nombre, edad, email }
-    // Lanza un error si la respuesta no es exitosa (status != 2xx).
-    obtenerTodas: async function () {
-        const response = await fetch(this.baseUrl); // GET /api/personas
-
-        if (!response.ok)
-            throw new Error('Error al obtener personas');
-
-        return await response.json(); // Convierte la respuesta JSON a un objeto JavaScript
+    // Lanza un error si la petición falla.
+    obtenerTodas: function () {
+        return $.ajax({        // GET /api/personas
+            url: this.baseUrl, // URL del endpoint
+            method: 'GET',     // Método HTTP (GET es el default, pero lo dejamos explícito)
+            dataType: 'json'   // Espera respuesta en formato JSON (jQuery la parsea automáticamente)
+        });
     },
 
-    // Obtiene una persona específica por su cédula.
+    // Obtiene una persona específica por su cédula usando Fetch API (nativa del navegador).
     // Parámetro: cedula (string) - la cédula de la persona a buscar.
     // Retorna: un objeto { cedula, nombre, edad, email } o null si no existe (404).
     obtenerPorCedula: async function (cedula) {
@@ -30,10 +30,10 @@ const personaApi = {
         if (!response.ok)
             throw new Error('Error al obtener persona');
 
-        return await response.json();
+        return await response.json(); // Convierte la respuesta JSON a un objeto JavaScript
     },
 
-    // Crea una nueva persona enviando los datos en formato JSON.
+    // Crea una nueva persona enviando los datos en formato JSON usando Fetch API.
     // Parámetro: persona (object) - objeto con { cedula, nombre, edad }.
     // Retorna: { success: true, data } si se creó correctamente,
     //          { success: false, status, data } si hubo un error (409 = duplicado, 400 = validación).
