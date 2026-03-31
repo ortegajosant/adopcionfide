@@ -42,6 +42,7 @@ namespace DemoMVC.Controllers
                 return View(persona);
             }
 
+            TempData["SuccessMessage"] = "¡Persona creada exitosamente!";
             return RedirectToAction("Index");
         }
 
@@ -49,16 +50,12 @@ namespace DemoMVC.Controllers
         public IActionResult Detalle(string id)
         {
             if (string.IsNullOrEmpty(id))
-            {
                 return BadRequest("Cédula no válida");
-            }
 
             var persona = _personaService.ObtenerDetalle(id);
 
             if (persona == null)
-            {
                 return NotFound("Persona no encontrada");
-            }
 
             return View(persona);
         }
